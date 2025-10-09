@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SkillLink Africa</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Minimal Buffer shim for environments where Buffer is not defined (pre-main) -->
+    <script>
+      (function () {
+        if (typeof window !== 'undefined' && typeof window.Buffer === 'undefined') {
+          // Very small Buffer polyfill providing from and alloc methods used by many libs.
+          window.Buffer = {
+            from: function (input, enc) {
+              if (typeof input === 'string') {
+                if (!enc || enc === 'utf8' || enc === 'utf-8') {
+                  return new TextEncoder().encode(input);
+                }
+                if (enc === 'base64') {
+                  const bin = atob(input);
+                  const arr = new Uint8Array(bin.length);
+                  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+                  return arr;
+                }
+              }
+              if (input instanceof ArrayBuffer || ArrayBuffer.isView(input)) {
+                return new Uint8Array(input);
+              }
+              return new Uint8Array([]);
+            },
+            alloc: function (len) {
+              return new Uint8Array(len);
+            }
+          };
+        }
+      })();
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
