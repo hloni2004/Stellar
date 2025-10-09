@@ -17,17 +17,19 @@ export const initiatePayment = async (req, res) => {
         worker_public_key,
         amount,
         transaction_hash,
-        status: 'escrow'
+        status: 'escrowed'
       }])
       .select()
       .single()
 
     if (error) throw error
 
-    // Update job status
+    // Update job status to paid (payment has been made to escrow)
     await supabase
       .from('jobs')
-      .update({ status: 'in_progress' })
+      .update({ 
+        status: 'paid'
+      })
       .eq('id', job_id)
 
     res.status(201).json(data)
@@ -58,5 +60,37 @@ export const getPaymentHistory = async (req, res) => {
   } catch (error) {
     console.error('Error fetching payment history:', error)
     res.status(500).json({ error: 'Failed to fetch payment history' })
+  }
+}
+
+export const getJobPaymentStatus = async (req, res) => {
+  try {
+    const { job_id } = req.params
+
+    const { data, error } = await supabase
+      .from('payments')
+      .select('*')
+      .eq('job_id', job_id)
+      .single()
+
+    if (error && error.code !== 'PGRST116') {
+      throw error
+    }
+
+    if (!data) {
+      return res.json({ payment_status: 'not_paid', message: 'No payment found for this job' })
+    }
+
+    res.json({
+      payment_status: data.status,
+      amount: data.amount,
+      transaction_hash: data.transaction_hash,
+      created_at: data.created_at,
+      client_public_key: data.client_public_key,
+      worker_public_key: data.worker_public_key
+    })
+  } catch (error) {
+    console.error('Error fetching job payment status:', error)
+    res.status(500).json({ error: 'Failed to fetch payment status' })
   }
 }

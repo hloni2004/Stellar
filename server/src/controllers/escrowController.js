@@ -99,7 +99,7 @@ export const releaseEscrow = async (req, res) => {
     const result = await server.submitTransaction(tx)
 
     // update payment record
-    await supabase.from('payments').update({ status: 'paid', released_at: new Date().toISOString() }).eq('id', payment_id)
+    await supabase.from('payments').update({ status: 'paid' }).eq('id', payment_id)
 
     res.json({ result })
   } catch (err) {

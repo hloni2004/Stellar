@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom'
 import { StellarWalletsKit, WalletNetwork, FreighterModule } from '@creit.tech/stellar-wallets-kit'
 import { Horizon } from '@stellar/stellar-sdk'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import WalletConnect from './components/WalletConnect'
 import Home from './pages/Home'
+import MyJobs from './pages/MyJobs'
 import Auth from './pages/Auth'
 import { AppProvider } from './context/AppContext'
 import TransactionHistory from './components/TransactionHistory'
@@ -78,6 +80,7 @@ function AppContent() {
   // Show main app if logged in
   return (
   <AppProvider value={{ kit, server, publicKey, setPublicKey, balance, setBalance, updateBalance, user, sorobanSupported, detectSorobanSupport }}>
+    <Router>
       <div className="min-h-screen bg-gray-50">
         <header className="bg-white shadow-sm border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -86,6 +89,34 @@ function AppContent() {
                 <h1 className="text-2xl font-bold text-blue-600">SkillLink Africa</h1>
                 <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Testnet</span>
               </div>
+              
+              {/* Navigation */}
+              <nav className="hidden md:flex space-x-8">
+                <NavLink
+                  to="/"
+                  className={({ isActive }) =>
+                    `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      isActive
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                    }`
+                  }
+                >
+                  Browse Jobs
+                </NavLink>
+                <NavLink
+                  to="/my-jobs"
+                  className={({ isActive }) =>
+                    `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                      isActive
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                    }`
+                  }
+                >
+                  My Jobs
+                </NavLink>
+              </nav>
               
               <div className="flex items-center space-x-4">
                 <div className="text-sm text-gray-600">
@@ -120,12 +151,16 @@ function AppContent() {
         </header>
 
         <main>
-          <Home />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/my-jobs" element={<MyJobs />} />
+          </Routes>
         </main>
         {showHistory && (
           <TransactionHistory onClose={() => setShowHistory(false)} />
         )}
       </div>
+    </Router>
     </AppProvider>
   )
 }
