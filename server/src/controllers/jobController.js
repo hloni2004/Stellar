@@ -245,18 +245,19 @@ async function releaseEscrowDirect(paymentId) {
   dotenv.config()
   
   const ESCROW_SECRET = process.env.ESCROW_SECRET
-  const NETWORK_PASSPHRASE = 'Test SDF Network ; September 2015'
+  const HORIZON_URL = process.env.HORIZON_URL || 'https://horizon-testnet.stellar.org'
+
+  // Import Stellar SDK components and use environment to choose Networks
+  const stellarPkg = await import('@stellar/stellar-sdk')
+  const { Keypair, TransactionBuilder, Operation, Asset, Networks } = stellarPkg
+  const Server = stellarPkg.Horizon.Server
+  const NETWORK_PASSPHRASE = process.env.STELLAR_NETWORK === 'PUBLIC' ? Networks.PUBLIC : Networks.TESTNET
 
   if (!ESCROW_SECRET) {
-    throw new Error('Escrow not configured')
+    throw new Error('Escrow not configured (ESCROW_SECRET missing)')
   }
 
-  // Import Stellar SDK components
-  const stellarPkg = await import('@stellar/stellar-sdk')
-  const { Keypair, TransactionBuilder, Operation, Asset } = stellarPkg
-  const Server = stellarPkg.Horizon.Server
-  
-  const server = new Server('https://horizon-testnet.stellar.org')
+  const server = new Server(HORIZON_URL)
 
   // Fetch payment record
   const { data: payment, error: pErr } = await supabase
@@ -290,18 +291,26 @@ async function releaseEscrowDirect(paymentId) {
     .setTimeout(30)
     .build()
 
-  tx.sign(escrowKP)
-  const result = await server.submitTransaction(tx)
+  try {
+    tx.sign(escrowKP)
+    const result = await server.submitTransaction(tx)
+    console.log('🎉 Transaction submitted:', result.hash)
 
-  console.log('🎉 Transaction submitted:', result.hash)
+    // Update payment record
+    await supabase.from('payments').update({ 
+      status: 'paid', 
+      released_at: new Date().toISOString() 
+    }).eq('id', paymentId)
 
-  // Update payment record
-  await supabase.from('payments').update({ 
-    status: 'paid', 
-    released_at: new Date().toISOString() 
-  }).eq('id', paymentId)
-
-  return result
+    return result
+  } catch (txErr) {
+    // Log helpful Horizon error details if present
+    console.error('❌ Transaction submission failed:', txErr.message || txErr)
+    if (txErr.response && txErr.response.data) {
+      console.error('Horizon response:', JSON.stringify(txErr.response.data))
+    }
+    throw txErr
+  }
 }
 
 // Legacy endpoint for backward compatibility

@@ -5,12 +5,14 @@ This guide will help you set up the complete dual approval payment system on any
 ## 📋 Prerequisites
 
 ### Required Software:
+
 1. **Node.js** (v18 or higher) - [Download here](https://nodejs.org/)
 2. **Git** - [Download here](https://git-scm.com/)
 3. **Code Editor** - VS Code recommended
 4. **Web Browser** - Chrome/Firefox with Freighter wallet extension
 
 ### Required Accounts:
+
 1. **GitHub Account** - To clone the repository
 2. **Supabase Account** - Database service
 3. **Stellar Testnet Account** - For testing (we'll create this)
@@ -30,12 +32,14 @@ git log --oneline -5
 ## 🗄️ Step 2: Database Setup (Supabase)
 
 ### Create New Supabase Project:
+
 1. Go to [supabase.com](https://supabase.com)
 2. Create new project
 3. Choose region (recommend closest to you)
 4. Wait for database to initialize
 
 ### Get Database Credentials:
+
 1. Go to **Settings** → **API**
 2. Copy these values:
    - `Project URL`
@@ -43,6 +47,7 @@ git log --oneline -5
    - `service_role key`
 
 ### Create Database Tables:
+
 1. Go to **SQL Editor** in Supabase
 2. Run this SQL to create all tables:
 
@@ -109,6 +114,7 @@ CREATE TABLE public.payments (
 ## 🔐 Step 3: Environment Configuration
 
 ### Server Environment (.env file):
+
 Create `server/.env` file with these values:
 
 ```env
@@ -123,9 +129,22 @@ SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 ESCROW_SECRET=your_new_escrow_secret_key
 ```
 
+### Environment variables (server)
+
+After creating `server/.env`, ensure these variables are set (copy from `.env.example`):
+
+- `SUPABASE_URL` — your Supabase project URL
+- `SUPABASE_ANON_KEY` — optional public anon key for client operations
+- `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_SERVICE_KEY` — server-only service role key (preferred on the server)
+- `ESCROW_SECRET` — the escrow Stellar account secret used to release payments (server-only)
+- `HORIZON_URL` and `STELLAR_NETWORK` — (optional) override Stellar network settings
+
+Security note: Do NOT commit `server/.env` or any secret values to source control. If any keys or the escrow secret were accidentally exposed, rotate them immediately from the Supabase dashboard and generate a new escrow account/secret. Store production secrets in a secure secrets manager provided by your hosting platform.
+
 ## 🌟 Step 4: Create New Escrow Account
 
 ### Generate Escrow Account:
+
 ```bash
 # Navigate to server directory
 cd server
@@ -142,12 +161,14 @@ console.log('⚠️  SAVE THE SECRET KEY SECURELY!');
 ```
 
 ### Fund the Escrow Account:
+
 1. Copy the **Public Key** from above
 2. Go to: https://laboratory.stellar.org/#account-creator?network=test
 3. Paste the public key and click **"Create Account"**
 4. This gives the account 10,000 XLM for testing
 
 ### Update .env file:
+
 - Add the **Secret Key** to `ESCROW_SECRET` in your `.env` file
 
 ## 📦 Step 5: Install Dependencies
@@ -157,7 +178,7 @@ console.log('⚠️  SAVE THE SECRET KEY SECURELY!');
 cd server
 npm install
 
-# Install client dependencies  
+# Install client dependencies
 cd ../client
 npm install
 ```
@@ -165,40 +186,49 @@ npm install
 ## 🚀 Step 6: Start the Application
 
 ### Terminal 1 - Start Server:
+
 ```bash
 cd server
 npm start
 ```
+
 Should show:
+
 - ✅ SkillLink Africa server running on port 3001
 - ✅ Stellar Network: TESTNET
 - ✅ Supabase connectivity check OK
 
 ### Terminal 2 - Start Client:
+
 ```bash
 cd client
 npm run dev
 ```
+
 Should show:
+
 - ✅ Local: http://localhost:5173/
 
 ## 🔍 Step 7: Verify Setup
 
 ### Test the System:
+
 1. **Open browser**: Go to `http://localhost:5173`
 2. **Install Freighter**: Browser extension for Stellar wallet
 3. **Create test account**: Use Freighter to generate testnet account
 4. **Fund test account**: Use Stellar Laboratory friendbot
 5. **Test workflow**:
    - Post a job
-   - Hire a worker  
+   - Hire a worker
    - Start job → Complete → Approve → Payment released
 
 ### Check Escrow Account:
+
 ```bash
 cd server
 node debug-escrow.js
 ```
+
 Should show escrow account balance and recent transactions.
 
 ## 📁 Required Files Summary
@@ -210,7 +240,7 @@ skilllink-africa/
 │   ├── package.json            # ✅ Included
 │   └── src/                    # ✅ Included - All server code
 ├── client/
-│   ├── package.json            # ✅ Included  
+│   ├── package.json            # ✅ Included
 │   └── src/                    # ✅ Included - All client code
 ├── DUAL_APPROVAL_SYSTEM.md     # ✅ Included - System documentation
 ├── DUAL_APPROVAL_SETUP.md      # ✅ Included - Database setup guide
@@ -220,11 +250,13 @@ skilllink-africa/
 ## 🔑 Critical Security Notes
 
 ### ⚠️ NEVER COMMIT THESE TO GIT:
+
 - `server/.env` file (contains secret keys)
 - Escrow secret key
 - Supabase service role key
 
 ### ✅ SAFE TO SHARE:
+
 - All source code files
 - Public keys
 - Supabase project URL
@@ -233,12 +265,14 @@ skilllink-africa/
 ## 🆘 Troubleshooting
 
 ### Common Issues:
+
 1. **"Escrow not configured"** → Check ESCROW_SECRET in .env
 2. **"Supabase connection failed"** → Verify Supabase credentials
 3. **"Account not found"** → Fund escrow account with friendbot
 4. **"Module not found"** → Run `npm install` in both directories
 
 ### Get Help:
+
 - Check `DUAL_APPROVAL_SYSTEM.md` for complete documentation
 - Run debug scripts in `server/` directory
 - Check browser console for client errors
@@ -247,6 +281,7 @@ skilllink-africa/
 ## 🎉 Success Indicators
 
 When everything is working:
+
 - ✅ Both servers start without errors
 - ✅ Website loads at localhost:5173
 - ✅ Can connect Freighter wallet
