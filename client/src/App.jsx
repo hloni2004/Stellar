@@ -33,6 +33,13 @@ function AppContent() {
       setBalance(xlmBalance.balance)
     } catch (error) {
       console.error('Error fetching balance:', error)
+      if (error.name === 'NotFoundError') {
+        // Account doesn't exist on testnet
+        setBalance('0')
+        alert(`⚠️ Account Not Found\n\nYour wallet account (${address.slice(0, 8)}...) doesn't exist on the Stellar testnet.\n\nTo fix this:\n1. Go to: https://friendbot.stellar.org\n2. Enter your public key: ${address}\n3. Click "Get lumens" to fund your account\n\nOr visit Stellar Laboratory to create the account.`)
+      } else {
+        setBalance('0')
+      }
     }
   }
 

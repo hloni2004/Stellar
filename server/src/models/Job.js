@@ -2,9 +2,17 @@ import { supabase } from './supabaseClient.js'
 
 export const Job = {
   async create(jobData) {
+    // Add default values for dual approval columns
+    const jobWithDefaults = {
+      ...jobData,
+      worker_approved: false,
+      employer_approved: false,
+      employer_approved_at: null
+    }
+
     const { data, error } = await supabase
       .from('jobs')
-      .insert([jobData])
+      .insert([jobWithDefaults])
       .select()
       .single()
 
@@ -50,7 +58,8 @@ export const Job = {
       .from('jobs')
       .update({ 
         worker_public_key,
-        status: 'in_progress'
+        status: 'in_progress',
+        assigned_at: new Date().toISOString()
       })
       .eq('id', id)
       .select()
@@ -64,7 +73,10 @@ export const Job = {
     const { data, error } = await supabase
       .from('jobs')
       .update({ 
-        status: 'completed'
+        status: 'completed',
+        completion_notes,
+        completed_at: new Date().toISOString(),
+        worker_approved: true  // Worker confirms they completed the job
       })
       .eq('id', id)
       .select()
@@ -74,11 +86,12 @@ export const Job = {
     return data
   },
 
-  async approve(id) {
+  async employerApprove(id) {
     const { data, error } = await supabase
       .from('jobs')
       .update({ 
-        status: 'approved'
+        employer_approved: true,  // Employer confirms they received service
+        employer_approved_at: new Date().toISOString()
       })
       .eq('id', id)
       .select()
@@ -86,6 +99,27 @@ export const Job = {
 
     if (error) throw error
     return data
+  },
+
+  async finalizeApproval(id) {
+    // Only called when both worker and employer have approved
+    const { data, error } = await supabase
+      .from('jobs')
+      .update({ 
+        status: 'approved',
+        approved_at: new Date().toISOString()
+      })
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) throw error
+    return data
+  },
+
+  // Legacy method for backward compatibility
+  async approve(id) {
+    return this.finalizeApproval(id)
   },
 
   async getJobsByWorker(worker_public_key) {

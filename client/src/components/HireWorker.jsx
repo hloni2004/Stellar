@@ -147,11 +147,17 @@ const HireWorker = ({ job, onClose }) => {
 
     } catch (error) {
       console.error('Hire failed:', error)
+      
+      if (error.name === 'NotFoundError') {
+        setStatus(`❌ Account not found on testnet. Please fund your wallet account first.`)
+        alert(`⚠️ Wallet Account Not Found\n\nYour wallet account doesn't exist on the Stellar testnet.\n\nTo fix this:\n1. Go to: https://friendbot.stellar.org\n2. Enter your public key\n3. Click "Get lumens" to fund your account with 10,000 XLM\n\nThen try hiring again.`)
+      } else {
         // Show error in modal if soroban modal open
         if (sorobanModal.open) {
           setSorobanModal({ ...sorobanModal, step: 'error', error })
         }
         setStatus('Payment failed. Check console for details.')
+      }
     } finally {
       setIsProcessing(false)
     }

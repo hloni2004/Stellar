@@ -24,11 +24,12 @@ export const initiatePayment = async (req, res) => {
 
     if (error) throw error
 
-    // Update job status to paid (payment has been made to escrow)
+    // Update job status to paid and link employer
     await supabase
       .from('jobs')
       .update({ 
-        status: 'paid'
+        status: 'paid',
+        employer_public_key: client_public_key
       })
       .eq('id', job_id)
 
@@ -86,6 +87,7 @@ export const getJobPaymentStatus = async (req, res) => {
       amount: data.amount,
       transaction_hash: data.transaction_hash,
       created_at: data.created_at,
+      released_at: data.released_at,
       client_public_key: data.client_public_key,
       worker_public_key: data.worker_public_key
     })

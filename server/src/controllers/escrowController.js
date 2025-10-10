@@ -2,8 +2,8 @@ import dotenv from 'dotenv'
 import * as stellarPkg from '@stellar/stellar-sdk'
 // The SDK exports Horizon namespace which contains Server — use Horizon.Server
 const Server = stellarPkg.Horizon.Server
-// Keypair, TransactionBuilder, Operation, Networks are re-exported from @stellar/stellar-base
-const { Keypair, TransactionBuilder, Operation, Networks } = stellarPkg
+// Keypair, TransactionBuilder, Operation, Networks, Asset are re-exported from @stellar/stellar-base
+const { Keypair, TransactionBuilder, Operation, Networks, Asset } = stellarPkg
 import { supabase } from '../models/supabaseClient.js'
 
 dotenv.config()
@@ -89,7 +89,7 @@ export const releaseEscrow = async (req, res) => {
     })
       .addOperation(Operation.payment({
         destination: payment.worker_public_key,
-        asset: { type: 'native' },
+        asset: Asset.native(),
         amount: payment.amount.toString(),
       }))
       .setTimeout(30)
@@ -99,7 +99,10 @@ export const releaseEscrow = async (req, res) => {
     const result = await server.submitTransaction(tx)
 
     // update payment record
-    await supabase.from('payments').update({ status: 'paid' }).eq('id', payment_id)
+    await supabase.from('payments').update({ 
+      status: 'paid', 
+      released_at: new Date().toISOString() 
+    }).eq('id', payment_id)
 
     res.json({ result })
   } catch (err) {

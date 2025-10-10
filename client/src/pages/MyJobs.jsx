@@ -27,18 +27,31 @@ const MyJobs = () => {
         // Filter jobs based on user role
         const myWorkJobs = allJobs.filter(job => job.worker_public_key === publicKey)
         
-        // For employer jobs, we need to check payments table
+        // For employer jobs, check both employer_public_key field and payments table
+        let myPostedJobs = []
+        
+        // First, get jobs using employer_public_key field (after migration)
+        const jobsWithEmployerKey = allJobs.filter(job => job.employer_public_key === publicKey)
+        
+        // Then, get jobs from payments table (before/during migration)
         const myPayments = await fetch(`/api/payments/history?publicKey=${publicKey}`)
         const paymentsData = myPayments.ok ? await myPayments.json() : []
         const myEmployerJobIds = paymentsData
           .filter(payment => payment.client_public_key === publicKey)
           .map(payment => payment.job_id)
         
-        const myPostedJobs = allJobs.filter(job => myEmployerJobIds.includes(job.id))
+        const jobsFromPayments = allJobs.filter(job => myEmployerJobIds.includes(job.id))
+        
+        // Combine and deduplicate
+        const allEmployerJobs = [...jobsWithEmployerKey, ...jobsFromPayments]
+        myPostedJobs = allEmployerJobs.filter((job, index, self) => 
+          index === self.findIndex(j => j.id === job.id)
+        )
         
         const availableJobs = allJobs.filter(job => 
           job.status === 'open' && 
           job.worker_public_key !== publicKey &&
+          job.employer_public_key !== publicKey &&
           !myEmployerJobIds.includes(job.id)
         )
         
