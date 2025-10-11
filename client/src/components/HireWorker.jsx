@@ -82,7 +82,16 @@ const HireWorker = ({ job, onClose }) => {
 
         setSorobanModal({ open: true, step: 'success', message: 'Transaction confirmed' })
         setStatus('Payment successful via Soroban escrow! Job created.')
-        await updateBalance(publicKey)
+        
+        // Wait a bit for the network to process the transaction, then update balance
+        setTimeout(async () => {
+          try {
+            await updateBalance(publicKey)
+          } catch (err) {
+            console.warn('Failed to update balance after Soroban transaction:', err)
+          }
+        }, 3000)
+        
         setTimeout(() => onClose(), 2000)
         return
       }
@@ -139,7 +148,15 @@ const HireWorker = ({ job, onClose }) => {
       if (!response.ok) throw new Error('Failed to record payment')
 
       setStatus('Payment successful! Job created.')
-      await updateBalance(publicKey)
+      
+      // Wait a bit for the network to process the transaction, then update balance
+      setTimeout(async () => {
+        try {
+          await updateBalance(publicKey)
+        } catch (err) {
+          console.warn('Failed to update balance after payment transaction:', err)
+        }
+      }, 3000)
       
       setTimeout(() => {
         onClose()
@@ -147,6 +164,11 @@ const HireWorker = ({ job, onClose }) => {
 
     } catch (error) {
       console.error('Hire failed:', error)
+      console.error('Error details:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      })
       
       if (error.name === 'NotFoundError') {
         setStatus(`❌ Account not found on testnet. Please fund your wallet account first.`)
@@ -156,7 +178,7 @@ const HireWorker = ({ job, onClose }) => {
         if (sorobanModal.open) {
           setSorobanModal({ ...sorobanModal, step: 'error', error })
         }
-        setStatus('Payment failed. Check console for details.')
+        setStatus(`Payment failed: ${error.message || 'Unknown error'}. Check console for details.`)
       }
     } finally {
       setIsProcessing(false)
@@ -208,7 +230,16 @@ const HireWorker = ({ job, onClose }) => {
         if (!response.ok) throw new Error('Failed to record payment (fallback)')
 
         setStatus('Payment successful (fallback escrow). Job created.')
-        await updateBalance(publicKey)
+        
+        // Wait a bit for the network to process the transaction, then update balance
+        setTimeout(async () => {
+          try {
+            await updateBalance(publicKey)
+          } catch (err) {
+            console.warn('Failed to update balance after fallback transaction:', err)
+          }
+        }, 3000)
+        
         setTimeout(() => onClose(), 2000)
       } catch (err) {
         console.error('Fallback failed:', err)
@@ -217,49 +248,119 @@ const HireWorker = ({ job, onClose }) => {
     }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-md w-full p-6">
-        <h2 className="text-xl font-bold mb-4">Hire Worker</h2>
+    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-t-2xl">
+          <h2 className="text-xl font-bold">Hire Worker</h2>
+          <p className="text-blue-100 text-sm mt-1">Secure payment via blockchain escrow</p>
+        </div>
         
-        <div className="space-y-3 mb-6">
-          <div>
-            <span className="font-semibold">Job:</span> {job.title}
+        {/* Content */}
+        <div className="p-6">
+          <div className="space-y-4 mb-6">
+            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+              <div className="flex justify-between items-start mb-3">
+                <span className="text-sm font-medium text-slate-600">Job Title</span>
+              </div>
+              <p className="font-semibold text-slate-800">{job.title}</p>
+            </div>
+            
+            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+              <div className="flex justify-between items-start mb-3">
+                <span className="text-sm font-medium text-slate-600">Worker</span>
+              </div>
+              <p className="font-mono text-sm text-slate-700 bg-white px-3 py-2 rounded border">
+                {job.worker_public_key.slice(0, 20)}...
+              </p>
+            </div>
+            
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4 border border-green-200">
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-medium text-slate-600">Payment Amount</span>
+                <div className="text-right">
+                  <span className="text-2xl font-bold text-slate-800">{job.price}</span>
+                  <span className="text-sm font-medium text-slate-600 ml-1">XLM</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+              <div className="flex items-start space-x-3">
+                <div className="w-5 h-5 text-blue-600 mt-0.5">
+                  <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-blue-800">Escrow Protection</p>
+                  <p className="text-xs text-blue-600 mt-1">
+                    Funds will be held securely until job completion and your approval.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div>
-            <span className="font-semibold">Worker:</span> {job.worker_public_key.slice(0, 8)}...
-          </div>
-          <div>
-            <span className="font-semibold">Amount:</span> {job.price} XLM
-          </div>
-          <div className="text-sm text-gray-600">
-            Funds will be held in escrow until job completion.
+
+          {status && (
+            <div className={`p-4 rounded-lg mb-6 border ${
+              status.includes('failed') || status.includes('❌') 
+                ? 'bg-red-50 text-red-800 border-red-200' 
+                : status.includes('successful') || status.includes('confirmed')
+                ? 'bg-green-50 text-green-800 border-green-200'
+                : 'bg-blue-50 text-blue-800 border-blue-200'
+            }`}>
+              <div className="flex items-center space-x-2">
+                {status.includes('failed') || status.includes('❌') ? (
+                  <div className="w-4 h-4 text-red-600">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                ) : status.includes('successful') || status.includes('confirmed') ? (
+                  <div className="w-4 h-4 text-green-600">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                ) : (
+                  <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+                )}
+                <span className="text-sm font-medium">{status}</span>
+              </div>
+            </div>
+          )}
+
+          <div className="flex justify-end space-x-3">
+            <button
+              onClick={onClose}
+              disabled={isProcessing}
+              className="px-6 py-2.5 text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50 hover:border-slate-400 disabled:opacity-50 transition-all duration-200 font-medium"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleHire}
+              disabled={isProcessing}
+              className="px-8 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 transition-all duration-200 font-medium shadow-md hover:shadow-lg flex items-center space-x-2"
+            >
+              {isProcessing ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Processing...</span>
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+                  </svg>
+                  <span>Confirm Hire</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
-
-        {status && (
-          <div className={`p-3 rounded mb-4 ${
-            status.includes('failed') ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'
-          }`}>
-            {status}
-          </div>
-        )}
-
-        <div className="flex justify-end space-x-3">
-          <button
-            onClick={onClose}
-            disabled={isProcessing}
-            className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 transition-colors"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={handleHire}
-            disabled={isProcessing}
-            className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 transition-colors"
-          >
-            {isProcessing ? 'Processing...' : 'Confirm Hire'}
-          </button>
-        </div>
+        
         <SorobanSignModal
           open={sorobanModal.open}
           step={sorobanModal.step}

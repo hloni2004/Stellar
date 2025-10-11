@@ -130,12 +130,29 @@ export const submitSignedSorobanTx = async (req, res) => {
     const { signed_xdr, job_id, client, worker, amount } = req.body
     if (!signed_xdr || !job_id || !client || !worker || !amount) return res.status(400).json({ error: 'signed_xdr, job_id, client, worker, amount required' })
 
-    // Submit to soroban rpc
-    const submitResult = await sorobanServer.sendTransaction(signed_xdr)
+    // Submit to soroban rpc using the SDK method
+    const signedTx = TransactionBuilder.fromXDR(signed_xdr, NETWORK_PASSPHRASE)
+    const submitResult = await sorobanServer.sendTransaction(signedTx)
+
+    // Check if submission was successful
+    if (submitResult.status === 'ERROR') {
+      console.error('Soroban submission failed:', submitResult)
+      return res.status(400).json({ error: 'Transaction submission failed', details: submitResult })
+    }
 
     // Record payment in supabase with status 'soroban_escrow'
-    const { error } = await supabase.from('payments').insert([{ job_id, client_public_key: client, worker_public_key: worker, amount, transaction_hash: submitResult.hash || submitResult.id || null, status: 'soroban_escrow' }])
-    if (error) console.error('supabase insert error:', error)
+    const { error } = await supabase.from('payments').insert([{ 
+      job_id, 
+      client_public_key: client, 
+      worker_public_key: worker, 
+      amount, 
+      transaction_hash: submitResult.hash || submitResult.id || null, 
+      status: 'soroban_escrow' 
+    }])
+    if (error) {
+      console.error('supabase insert error:', error)
+      return res.status(500).json({ error: 'Failed to record payment', details: error.message })
+    }
 
     res.json({ result: submitResult })
   } catch (err) {
