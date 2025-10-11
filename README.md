@@ -23,29 +23,34 @@ The platform solves the problem of payment security and trust between freelancer
 ## Tech Stack
 
 ### Frontend
+
 - **React.js** - Modern component-based UI framework
 - **Vite** - Fast build tool and development server
 - **Tailwind CSS** - Utility-first CSS framework for responsive design
 - **React Router** - Client-side routing for single-page application
 
 ### Backend
+
 - **Node.js** - JavaScript runtime environment
 - **Express.js** - Web application framework
 - **Supabase** - Backend-as-a-Service with PostgreSQL database
 
 ### Blockchain & Smart Contracts
+
 - **Stellar Network** - Fast, low-cost blockchain for payments
 - **Soroban** - Stellar's smart contract platform
 - **Rust** - Systems programming language for smart contracts
 - **Stellar SDK** - JavaScript SDK for blockchain interactions
 
 ### Development Tools
+
 - **Stellar Wallets Kit** - Wallet connection abstraction
 - **Freighter Wallet** - Browser extension wallet for Stellar
 - **Horizon API** - REST API for Stellar network
 - **Soroban RPC** - Smart contract execution environment
 
 ### Other Tools
+
 - **Git/GitHub** - Version control and repository hosting
 - **npm** - Package management
 - **ESLint** - Code quality and formatting
@@ -54,6 +59,7 @@ The platform solves the problem of payment security and trust between freelancer
 ## How to Run the Project
 
 ### Prerequisites
+
 - Node.js (v16 or higher)
 - npm or yarn
 - Freighter Wallet browser extension
@@ -65,13 +71,16 @@ The platform solves the problem of payment security and trust between freelancer
    ```bash
    git clone https://github.com/hloni2004/Stellar.git
    cd Stellar
-Set up the backend server
+   Set up the backend server
+   ```
 
 bash
 cd server
 npm install
 cp .env.template .env
+
 # Edit .env file with your configuration
+
 npm start
 Set up the frontend client
 
@@ -118,6 +127,7 @@ Mobile App: Native iOS and Android applications
 - **Multi-currency Support**: Support for additional Stellar assets
 
 ### Long-term Vision
+
 - **AI Matching**: Machine learning for job-worker matching
 - **Skill Verification**: Blockchain-based credential system
 - **Cross-border Payments**: Integration with traditional payment systems
@@ -127,6 +137,7 @@ Mobile App: Native iOS and Android applications
 - **Real-time Chat System**: Secure messaging platform for workers and clients to discuss project details, negotiate prices, and agree on service terms before initiating escrow contracts
 
 ### Technical Enhancements
+
 - **Smart Contract Upgrades**: More sophisticated escrow logic
 - **Performance Optimization**: Faster loading and transaction processing
 - **Security Audits**: Professional smart contract security reviews
@@ -136,6 +147,7 @@ Mobile App: Native iOS and Android applications
 ## Contributing
 
 We welcome contributions from the community! Please feel free to:
+
 - **Report bugs and issues**
 - **Suggest new features**
 - **Submit pull requests**
