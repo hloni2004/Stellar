@@ -112,7 +112,7 @@ Browse available jobs or post your own services
 Use the secure escrow system to hire workers
 
 Demo Video Link
-[Demo video link will be added here]
+https://youtu.be/vh0iNZGTuhs
 
 Team Members
 Developer & Project Lead: Hloni - Full-stack development, blockchain integration, and system architecture
