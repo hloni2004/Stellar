@@ -1,92 +1,70 @@
-SkillLink Africa
-Project Description
+# SkillLink Africa
+
+## Project Description
+
 SkillLink Africa is a decentralized freelance marketplace built on the Stellar network that connects clients with skilled workers across Africa. The platform uses smart contracts and escrow services to ensure secure, transparent, and trustless transactions. By leveraging blockchain technology, SkillLink Africa eliminates intermediaries, reduces transaction fees, and provides a reliable payment system that addresses trust issues in the African freelance economy.
 
 The platform solves the problem of payment security and trust between freelancers and clients by using automated escrow contracts that hold funds until job completion, ensuring fair compensation for workers and protection for clients.
 
-Features
-Job Marketplace: Browse and post freelance opportunities across various categories
+## Features
 
-Secure Payments: XLM-based payments with automatic escrow protection
+- **Job Marketplace**: Browse and post freelance opportunities across various categories
+- **Secure Payments**: XLM-based payments with automatic escrow protection
+- **Dual Escrow System**:
+  - Legacy account-based escrow for standard wallets
+  - Modern Soroban smart contract escrow for advanced functionality
+- **Wallet Integration**: Seamless Freighter wallet integration for easy transactions
+- **Real-time Balance Updates**: Live balance tracking with automatic refresh
+- **Transaction History**: Complete record of all payments and job activities
+- **User Authentication**: Secure login system with Supabase integration
+- **Responsive Design**: Mobile-friendly interface with professional styling
+- **Network Status**: Visual indicators for wallet connection and Soroban support
 
-Dual Escrow System:
+## Tech Stack
 
-Legacy account-based escrow for standard wallets
+### Frontend
+- **React.js** - Modern component-based UI framework
+- **Vite** - Fast build tool and development server
+- **Tailwind CSS** - Utility-first CSS framework for responsive design
+- **React Router** - Client-side routing for single-page application
 
-Modern Soroban smart contract escrow for advanced functionality
+### Backend
+- **Node.js** - JavaScript runtime environment
+- **Express.js** - Web application framework
+- **Supabase** - Backend-as-a-Service with PostgreSQL database
 
-Wallet Integration: Seamless Freighter wallet integration for easy transactions
+### Blockchain & Smart Contracts
+- **Stellar Network** - Fast, low-cost blockchain for payments
+- **Soroban** - Stellar's smart contract platform
+- **Rust** - Systems programming language for smart contracts
+- **Stellar SDK** - JavaScript SDK for blockchain interactions
 
-Real-time Balance Updates: Live balance tracking with automatic refresh
+### Development Tools
+- **Stellar Wallets Kit** - Wallet connection abstraction
+- **Freighter Wallet** - Browser extension wallet for Stellar
+- **Horizon API** - REST API for Stellar network
+- **Soroban RPC** - Smart contract execution environment
 
-Transaction History: Complete record of all payments and job activities
+### Other Tools
+- **Git/GitHub** - Version control and repository hosting
+- **npm** - Package management
+- **ESLint** - Code quality and formatting
+- **PostCSS** - CSS processing pipeline
 
-User Authentication: Secure login system with Supabase integration
+## How to Run the Project
 
-Responsive Design: Mobile-friendly interface with professional styling
+### Prerequisites
+- Node.js (v16 or higher)
+- npm or yarn
+- Freighter Wallet browser extension
+- Git
 
-Network Status: Visual indicators for wallet connection and Soroban support
+### Installation Steps
 
-Tech Stack
-Frontend
-React.js - Modern component-based UI framework
-
-Vite - Fast build tool and development server
-
-Tailwind CSS - Utility-first CSS framework for responsive design
-
-React Router - Client-side routing for single-page application
-
-Backend
-Node.js - JavaScript runtime environment
-
-Express.js - Web application framework
-
-Supabase - Backend-as-a-Service with PostgreSQL database
-
-Blockchain & Smart Contracts
-Stellar Network - Fast, low-cost blockchain for payments
-
-Soroban - Stellar's smart contract platform
-
-Rust - Systems programming language for smart contracts
-
-Stellar SDK - JavaScript SDK for blockchain interactions
-
-Development Tools
-Stellar Wallets Kit - Wallet connection abstraction
-
-Freighter Wallet - Browser extension wallet for Stellar
-
-Horizon API - REST API for Stellar network
-
-Soroban RPC - Smart contract execution environment
-
-Other Tools
-Git/GitHub - Version control and repository hosting
-
-npm - Package management
-
-ESLint - Code quality and formatting
-
-PostCSS - CSS processing pipeline
-
-How to Run the Project
-Prerequisites
-Node.js (v16 or higher)
-
-npm or yarn
-
-Freighter Wallet browser extension
-
-Git
-
-Installation Steps
-Clone the repository
-
-bash
-git clone https://github.com/hloni2004/Stellar.git
-cd Stellar
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/hloni2004/Stellar.git
+   cd Stellar
 Set up the backend server
 
 bash
