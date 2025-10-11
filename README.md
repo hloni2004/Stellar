@@ -135,6 +135,7 @@ _[Demo video link will be added here]_
 - **Governance Token**: Community-driven platform governance
 - **Enterprise Features**: Business accounts and bulk hiring
 - **Educational Platform**: Skills training and certification
+- **Real-time Chat System**: Secure messaging platform for workers and clients to discuss project details, negotiate prices, and agree on service terms before initiating escrow contracts
 
 ### Technical Enhancements
 
