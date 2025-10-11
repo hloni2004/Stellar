@@ -23,34 +23,29 @@ The platform solves the problem of payment security and trust between freelancer
 ## Tech Stack
 
 ### Frontend
-
 - **React.js** - Modern component-based UI framework
 - **Vite** - Fast build tool and development server
 - **Tailwind CSS** - Utility-first CSS framework for responsive design
 - **React Router** - Client-side routing for single-page application
 
 ### Backend
-
 - **Node.js** - JavaScript runtime environment
 - **Express.js** - Web application framework
 - **Supabase** - Backend-as-a-Service with PostgreSQL database
 
 ### Blockchain & Smart Contracts
-
 - **Stellar Network** - Fast, low-cost blockchain for payments
 - **Soroban** - Stellar's smart contract platform
 - **Rust** - Systems programming language for smart contracts
 - **Stellar SDK** - JavaScript SDK for blockchain interactions
 
 ### Development Tools
-
 - **Stellar Wallets Kit** - Wallet connection abstraction
 - **Freighter Wallet** - Browser extension wallet for Stellar
 - **Horizon API** - REST API for Stellar network
 - **Soroban RPC** - Smart contract execution environment
 
 ### Other Tools
-
 - **Git/GitHub** - Version control and repository hosting
 - **npm** - Package management
 - **ESLint** - Code quality and formatting
@@ -59,7 +54,6 @@ The platform solves the problem of payment security and trust between freelancer
 ## How to Run the Project
 
 ### Prerequisites
-
 - Node.js (v16 or higher)
 - npm or yarn
 - Freighter Wallet browser extension
@@ -68,67 +62,62 @@ The platform solves the problem of payment security and trust between freelancer
 ### Installation Steps
 
 1. **Clone the repository**
-
    ```bash
    git clone https://github.com/hloni2004/Stellar.git
    cd Stellar
-   ```
+Set up the backend server
 
-2. **Set up the backend server**
+bash
+cd server
+npm install
+cp .env.template .env
+# Edit .env file with your configuration
+npm start
+Set up the frontend client
 
-   ```bash
-   cd server
-   npm install
-   cp .env.template .env
-   # Edit .env file with your configuration
-   npm start
-   ```
+bash
+cd ../client
+npm install
+npm run dev
+Configure environment variables
 
-3. **Set up the frontend client**
+Update server/.env with your Supabase credentials
 
-   ```bash
-   cd ../client
-   npm install
-   npm run dev
-   ```
+Ensure Stellar testnet configuration is correct
 
-4. **Configure environment variables**
+Access the application
 
-   - Update `server/.env` with your Supabase credentials
-   - Ensure Stellar testnet configuration is correct
+Frontend: http://localhost:5173
 
-5. **Access the application**
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:3001
+Backend API: http://localhost:3001
 
-### Getting Started
+Getting Started
+Install Freighter wallet extension and set it to Testnet
 
-1. Install Freighter wallet extension and set it to Testnet
-2. Fund your wallet with testnet XLM from https://friendbot.stellar.org
-3. Connect your wallet to the application
-4. Browse available jobs or post your own services
-5. Use the secure escrow system to hire workers
+Fund your wallet with testnet XLM from https://friendbot.stellar.org
 
-## Demo Video Link
+Connect your wallet to the application
 
-_[Demo video link will be added here]_
+Browse available jobs or post your own services
 
-## Team Members
+Use the secure escrow system to hire workers
 
-- **Developer & Project Lead**: Hloni - Full-stack development, blockchain integration, and system architecture
+Demo Video Link
+[Demo video link will be added here]
 
-## Future Improvements
+Team Members
+Developer & Project Lead: Hloni - Full-stack development, blockchain integration, and system architecture
 
-### Short-term Goals
+Future Improvements
+Short-term Goals
+Mobile App: Native iOS and Android applications
 
-- **Mobile App**: Native iOS and Android applications
 - **Advanced Search**: Filtering by skills, location, and price range
 - **Rating System**: User reviews and reputation scoring
 - **Dispute Resolution**: Automated mediation system for conflicts
 - **Multi-currency Support**: Support for additional Stellar assets
 
 ### Long-term Vision
-
 - **AI Matching**: Machine learning for job-worker matching
 - **Skill Verification**: Blockchain-based credential system
 - **Cross-border Payments**: Integration with traditional payment systems
@@ -138,7 +127,6 @@ _[Demo video link will be added here]_
 - **Real-time Chat System**: Secure messaging platform for workers and clients to discuss project details, negotiate prices, and agree on service terms before initiating escrow contracts
 
 ### Technical Enhancements
-
 - **Smart Contract Upgrades**: More sophisticated escrow logic
 - **Performance Optimization**: Faster loading and transaction processing
 - **Security Audits**: Professional smart contract security reviews
@@ -148,16 +136,12 @@ _[Demo video link will be added here]_
 ## Contributing
 
 We welcome contributions from the community! Please feel free to:
+- **Report bugs and issues**
+- **Suggest new features**
+- **Submit pull requests**
+- **Improve documentation**
 
-- Report bugs and issues
-- Suggest new features
-- Submit pull requests
-- Improve documentation
-
-## License
-
+License
 This project is open-source and available under the MIT License.
 
----
-
-_SkillLink Africa - Connecting Africa's talent with blockchain-powered security_
+SkillLink Africa - Connecting Africa's talent with blockchain-powered security
