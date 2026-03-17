@@ -14,9 +14,11 @@ export default defineConfig({
     host: true, // This allows access from other devices on the network
     open: true, // This automatically opens the browser
     proxy: {
-      // Proxy API requests to the backend during development
+      // Proxy API requests to the backend
       '/api': {
-        target: 'http://localhost:3001',
+        target: process.env.NODE_ENV === 'production'
+          ? 'https://stellar-03c6.onrender.com'
+          : 'http://localhost:3001',
         changeOrigin: true,
         secure: false,
       },
