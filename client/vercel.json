@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "https://stellar-03c6.onrender.com/api/$1" }
+  ]
+}
