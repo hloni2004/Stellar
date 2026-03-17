@@ -1,3 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	body {
+		@apply bg-paper text-ink font-sans;
+	}
+}
+
+@layer utilities {
+	.border-strict {
+		border: 1.5px solid #0D0D0D;
+	}
+
+	.border-b-strict {
+		border-bottom: 1.5px solid #0D0D0D;
+	}
+
+	.border-r-strict {
+		border-right: 1.5px solid #0D0D0D;
+	}
+
+	.border-t-strict {
+		border-top: 1.5px solid #0D0D0D;
+	}
+
+	.border-l-strict {
+		border-left: 1.5px solid #0D0D0D;
+	}
+}

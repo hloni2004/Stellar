@@ -82,27 +82,17 @@ const JobForm = ({ onJobCreated, onCancel }) => {
   return (
     <div>
       {user && (
-        <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-              <svg className="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-sm font-medium text-blue-800">
-                Posting as: <span className="font-bold">{user.full_name || user.email}</span>
-              </p>
-              <p className="text-xs text-blue-600">Your job will be visible to all freelancers</p>
-            </div>
-          </div>
+        <div className="mb-6 border-strict px-4 py-3">
+          <div className="font-mono text-xs uppercase">Posting As</div>
+          <p className="font-sans font-black uppercase tracking-tight mt-1">{user.full_name || user.email}</p>
+          <p className="font-sans text-gray-800 leading-relaxed text-sm mt-1">Your job will be visible to all freelancers.</p>
         </div>
       )}
-      
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid gap-6 md:grid-cols-2">
           <div className="md:col-span-2">
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block font-mono text-xs uppercase mb-2">
               Job Title *
             </label>
             <input
@@ -111,13 +101,13 @@ const JobForm = ({ onJobCreated, onCancel }) => {
               value={formData.title}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-slate-800 placeholder-slate-400"
-              placeholder="e.g., Senior React Developer for E-commerce Platform"
+              className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
+              placeholder="Senior React Developer for E-commerce Platform"
             />
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block font-mono text-xs uppercase mb-2">
               Project Description *
             </label>
             <textarea
@@ -126,36 +116,31 @@ const JobForm = ({ onJobCreated, onCancel }) => {
               onChange={handleChange}
               required
               rows={5}
-              className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-slate-800 placeholder-slate-400 resize-none"
-              placeholder="Describe your project requirements, skills needed, timeline, and any specific details..."
+              className="bg-transparent border-b-strict border-ink outline-none py-3 font-sans text-base text-gray-800 leading-relaxed focus:border-safety transition-colors rounded-none w-full resize-none"
+              placeholder="Describe requirements, timeline, and deliverables."
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block font-mono text-xs uppercase mb-2">
               Budget (XLM) *
             </label>
-            <div className="relative">
-              <input
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                required
-                min="1"
-                step="0.1"
-                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-slate-800 placeholder-slate-400"
-                placeholder="100.0"
-              />
-              <div className="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
-                <span className="text-slate-500 font-medium">XLM</span>
-              </div>
-            </div>
-            <p className="text-xs text-slate-500 mt-1">Funds will be held in secure escrow until completion</p>
+            <input
+              type="number"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              required
+              min="1"
+              step="0.1"
+              className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
+              placeholder="100.0"
+            />
+            <p className="font-sans text-gray-800 leading-relaxed text-xs mt-2">Funds are escrowed until completion.</p>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block font-mono text-xs uppercase mb-2">
               Category *
             </label>
             <select
@@ -163,7 +148,7 @@ const JobForm = ({ onJobCreated, onCancel }) => {
               value={formData.category}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-slate-800 bg-white"
+              className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
             >
               {categories.map(cat => (
                 <option key={cat} value={cat}>
@@ -174,7 +159,7 @@ const JobForm = ({ onJobCreated, onCancel }) => {
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-sm font-semibold text-slate-700 mb-2">
+            <label className="block font-mono text-xs uppercase mb-2">
               Location *
             </label>
             <input
@@ -183,55 +168,35 @@ const JobForm = ({ onJobCreated, onCancel }) => {
               value={formData.location}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 text-slate-800 placeholder-slate-400"
-              placeholder="e.g., Lagos, Nigeria or Remote"
+              className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
+              placeholder="Lagos, Nigeria or Remote"
             />
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t border-slate-200">
+        <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-6 border-t-strict">
           <button
             type="button"
             onClick={onCancel}
-            className="px-6 py-3 text-slate-600 border border-slate-300 rounded-xl hover:bg-slate-50 hover:border-slate-400 transition-all duration-200 font-medium"
+            className="bg-transparent text-ink border-strict hover:bg-ink hover:text-paper px-8 py-3 font-bold uppercase text-sm tracking-wide transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSubmitting || !user}
-            className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-semibold shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+            className="bg-ink text-paper hover:bg-safety px-8 py-3 font-bold uppercase text-sm tracking-wide transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Creating Job...</span>
-              </>
-            ) : (
-              <>
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-                </svg>
-                <span>Publish Job</span>
-              </>
-            )}
+            {isSubmitting ? 'Creating Job...' : 'Publish Job'}
           </button>
         </div>
+
       </form>
 
       {!user && (
-        <div className="mt-6 p-6 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-              <svg className="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-amber-800">Authentication Required</p>
-              <p className="text-xs text-amber-700 mt-1">Please log in to create and manage job listings</p>
-            </div>
-          </div>
+        <div className="mt-6 border-strict px-4 py-3">
+          <p className="font-sans font-black uppercase tracking-tight text-sm">Authentication Required</p>
+          <p className="font-sans text-gray-800 leading-relaxed text-sm mt-1">Please sign in to create and manage job listings.</p>
         </div>
       )}
     </div>

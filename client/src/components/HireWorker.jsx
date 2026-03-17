@@ -199,6 +199,7 @@ const HireWorker = ({ job, onClose }) => {
       try {
         setSorobanModal({ open: false, step: null, message: '', error: null })
         setStatus('Attempting fallback to account escrow...')
+        const account = await server.loadAccount(publicKey)
         const eRes = await fetch('/api/escrow/address')
         if (!eRes.ok) throw new Error('No account-based escrow available')
         const { escrow } = await eRes.json()
@@ -248,86 +249,58 @@ const HireWorker = ({ job, onClose }) => {
     }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-paper border-strict max-w-md w-full">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-t-2xl">
-          <h2 className="text-xl font-bold">Hire Worker</h2>
-          <p className="text-blue-100 text-sm mt-1">Secure payment via blockchain escrow</p>
+        <div className="border-b-strict p-5">
+          <h2 className="font-sans font-black uppercase tracking-tighter leading-tight text-xl">Hire Worker</h2>
+          <p className="font-sans text-gray-800 leading-relaxed text-sm mt-1">Secure payment via blockchain escrow.</p>
         </div>
         
         {/* Content */}
-        <div className="p-6">
+        <div className="p-5">
           <div className="space-y-4 mb-6">
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+            <div className="border-strict p-3">
               <div className="flex justify-between items-start mb-3">
-                <span className="text-sm font-medium text-slate-600">Job Title</span>
+                <span className="font-mono text-xs uppercase">Job Title</span>
               </div>
-              <p className="font-semibold text-slate-800">{job.title}</p>
+              <p className="font-sans font-black uppercase tracking-tight text-sm">{job.title}</p>
             </div>
             
-            <div className="bg-slate-50 rounded-lg p-4 border border-slate-200">
+            <div className="border-strict p-3">
               <div className="flex justify-between items-start mb-3">
-                <span className="text-sm font-medium text-slate-600">Worker</span>
+                <span className="font-mono text-xs uppercase">Worker</span>
               </div>
-              <p className="font-mono text-sm text-slate-700 bg-white px-3 py-2 rounded border">
+              <p className="font-mono text-sm break-all">
                 {job.worker_public_key.slice(0, 20)}...
               </p>
             </div>
             
-            <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4 border border-green-200">
+            <div className="border-strict p-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-slate-600">Payment Amount</span>
+                <span className="font-mono text-xs uppercase">Payment Amount</span>
                 <div className="text-right">
-                  <span className="text-2xl font-bold text-slate-800">{job.price}</span>
-                  <span className="text-sm font-medium text-slate-600 ml-1">XLM</span>
+                  <span className="font-mono text-2xl font-bold">{job.price}</span>
+                  <span className="font-mono text-sm ml-1">XLM</span>
                 </div>
               </div>
             </div>
             
-            <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
-              <div className="flex items-start space-x-3">
-                <div className="w-5 h-5 text-blue-600 mt-0.5">
-                  <svg fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-blue-800">Escrow Protection</p>
-                  <p className="text-xs text-blue-600 mt-1">
-                    Funds will be held securely until job completion and your approval.
-                  </p>
-                </div>
-              </div>
+            <div className="border-strict p-3">
+              <p className="font-sans font-black uppercase tracking-tight text-sm">Escrow Protection</p>
+              <p className="font-sans text-gray-800 leading-relaxed text-xs mt-1">Funds remain locked until job completion and your approval.</p>
             </div>
           </div>
 
           {status && (
-            <div className={`p-4 rounded-lg mb-6 border ${
+            <div className={`p-4 mb-6 border-strict ${
               status.includes('failed') || status.includes('❌') 
-                ? 'bg-red-50 text-red-800 border-red-200' 
+                ? 'bg-paper text-ink' 
                 : status.includes('successful') || status.includes('confirmed')
-                ? 'bg-green-50 text-green-800 border-green-200'
-                : 'bg-blue-50 text-blue-800 border-blue-200'
+                ? 'bg-paper text-ink'
+                : 'bg-paper text-ink'
             }`}>
-              <div className="flex items-center space-x-2">
-                {status.includes('failed') || status.includes('❌') ? (
-                  <div className="w-4 h-4 text-red-600">
-                    <svg fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                ) : status.includes('successful') || status.includes('confirmed') ? (
-                  <div className="w-4 h-4 text-green-600">
-                    <svg fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                ) : (
-                  <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                )}
-                <span className="text-sm font-medium">{status}</span>
-              </div>
+              <span className="font-mono text-xs uppercase">{status}</span>
             </div>
           )}
 
@@ -335,28 +308,16 @@ const HireWorker = ({ job, onClose }) => {
             <button
               onClick={onClose}
               disabled={isProcessing}
-              className="px-6 py-2.5 text-slate-600 border border-slate-300 rounded-lg hover:bg-slate-50 hover:border-slate-400 disabled:opacity-50 transition-all duration-200 font-medium"
+              className="bg-transparent text-ink border-strict hover:bg-ink hover:text-paper px-6 py-2 font-bold uppercase text-xs tracking-wide transition-colors disabled:opacity-50"
             >
               Cancel
             </button>
             <button
               onClick={handleHire}
               disabled={isProcessing}
-              className="px-8 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 transition-all duration-200 font-medium shadow-md hover:shadow-lg flex items-center space-x-2"
+              className="bg-ink text-paper hover:bg-safety px-8 py-2 font-bold uppercase text-xs tracking-wide transition-colors disabled:opacity-50"
             >
-              {isProcessing ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span>Processing...</span>
-                </>
-              ) : (
-                <>
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                  </svg>
-                  <span>Confirm Hire</span>
-                </>
-              )}
+              {isProcessing ? 'Processing...' : 'Confirm Hire'}
             </button>
           </div>
         </div>

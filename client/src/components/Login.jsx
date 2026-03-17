@@ -46,12 +46,12 @@ const Login = ({ onSwitchToSignup }) => {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-bold text-center mb-6">Welcome Back</h2>
+    <div className="max-w-2xl mx-auto">
+      <h2 className="font-sans font-black uppercase tracking-tighter leading-tight text-2xl mb-6">Welcome Back</h2>
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block font-mono text-xs uppercase mb-2">
             Email
           </label>
           <input
@@ -60,13 +60,13 @@ const Login = ({ onSwitchToSignup }) => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
             placeholder="Enter your email"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block font-mono text-xs uppercase mb-2">
             Password
           </label>
           <input
@@ -75,7 +75,7 @@ const Login = ({ onSwitchToSignup }) => {
             value={formData.password}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
             placeholder="Enter your password"
           />
         </div>
@@ -83,18 +83,18 @@ const Login = ({ onSwitchToSignup }) => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          className="w-full bg-ink text-paper hover:bg-safety px-8 py-3 font-bold uppercase text-sm tracking-wide transition-colors disabled:opacity-50"
         >
           {isSubmitting ? 'Logging in...' : 'Log In'}
         </button>
       </form>
 
       <div className="mt-4 text-center">
-        <p className="text-sm text-gray-600">
+        <p className="font-sans text-gray-800 leading-relaxed text-sm">
           Don't have an account?{' '}
           <button
             onClick={onSwitchToSignup}
-            className="text-blue-600 hover:text-blue-700 font-medium"
+            className="font-bold uppercase text-xs tracking-wide underline"
           >
             Sign Up
           </button>

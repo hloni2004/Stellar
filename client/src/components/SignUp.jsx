@@ -53,12 +53,12 @@ const SignUp = ({ onSwitchToLogin }) => {
   }
 
   return (
-    <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-bold text-center mb-6">Join SkillLink Africa</h2>
+    <div className="max-w-2xl mx-auto">
+      <h2 className="font-sans font-black uppercase tracking-tighter leading-tight text-2xl mb-6">Join SkillLink Africa</h2>
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block font-mono text-xs uppercase mb-2">
             Full Name
           </label>
           <input
@@ -67,13 +67,13 @@ const SignUp = ({ onSwitchToLogin }) => {
             value={formData.full_name}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
             placeholder="Enter your full name"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block font-mono text-xs uppercase mb-2">
             Email
           </label>
           <input
@@ -82,13 +82,13 @@ const SignUp = ({ onSwitchToLogin }) => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
             placeholder="Enter your email"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block font-mono text-xs uppercase mb-2">
             Password
           </label>
           <input
@@ -98,13 +98,13 @@ const SignUp = ({ onSwitchToLogin }) => {
             onChange={handleChange}
             required
             minLength="6"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
             placeholder="Create a password"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block font-mono text-xs uppercase mb-2">
             Skills (comma separated)
           </label>
           <input
@@ -112,13 +112,13 @@ const SignUp = ({ onSwitchToLogin }) => {
             name="skills"
             value={formData.skills}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
             placeholder="e.g., React, Design, Writing"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block font-mono text-xs uppercase mb-2">
             Location
           </label>
           <input
@@ -126,13 +126,13 @@ const SignUp = ({ onSwitchToLogin }) => {
             name="location"
             value={formData.location}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
             placeholder="e.g., Lagos, Nigeria"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block font-mono text-xs uppercase mb-2">
             Stellar Public Key (Optional)
           </label>
           <input
@@ -140,7 +140,7 @@ const SignUp = ({ onSwitchToLogin }) => {
             name="public_key"
             value={formData.public_key}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="bg-transparent border-b-strict border-ink outline-none py-3 font-mono text-lg focus:border-safety transition-colors rounded-none w-full"
             placeholder="G..."
           />
         </div>
@@ -148,18 +148,18 @@ const SignUp = ({ onSwitchToLogin }) => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          className="w-full bg-ink text-paper hover:bg-safety px-8 py-3 font-bold uppercase text-sm tracking-wide transition-colors disabled:opacity-50"
         >
           {isSubmitting ? 'Creating Account...' : 'Sign Up'}
         </button>
       </form>
 
       <div className="mt-4 text-center">
-        <p className="text-sm text-gray-600">
+        <p className="font-sans text-gray-800 leading-relaxed text-sm">
           Already have an account?{' '}
           <button
             onClick={onSwitchToLogin}
-            className="text-blue-600 hover:text-blue-700 font-medium"
+            className="font-bold uppercase text-xs tracking-wide underline"
           >
             Log In
           </button>

@@ -131,12 +131,12 @@ const JobManager = ({ job, onJobUpdate }) => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'open': return 'bg-gray-100 text-gray-800'
-      case 'paid': return 'bg-blue-100 text-blue-800'
-      case 'in_progress': return 'bg-yellow-100 text-yellow-800'
-      case 'completed': return 'bg-orange-100 text-orange-800'
-      case 'approved': return 'bg-green-100 text-green-800'
-      default: return 'bg-gray-100 text-gray-800'
+      case 'open': return 'bg-paper text-ink'
+      case 'paid': return 'bg-paper text-ink'
+      case 'in_progress': return 'bg-paper text-ink'
+      case 'completed': return 'bg-paper text-ink'
+      case 'approved': return 'bg-paper text-ink'
+      default: return 'bg-paper text-ink'
     }
   }
 
@@ -173,70 +173,70 @@ const JobManager = ({ job, onJobUpdate }) => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
+    <div className="bg-paper border-b-strict p-6">
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-xl font-semibold text-gray-900">{job.title}</h3>
-        <span className={`px-3 py-1 text-sm font-medium rounded-full ${getStatusColor(job.status)}`}>
+        <h3 className="font-sans font-black uppercase tracking-tighter leading-tight text-xl">{job.title}</h3>
+        <span className={`px-3 py-1 text-xs font-mono uppercase border-strict ${getStatusColor(job.status)}`}>
           {getStatusText(job.status)}
         </span>
       </div>
       
-      <p className="text-gray-600 mb-4">{job.description}</p>
+      <p className="font-sans text-gray-800 leading-relaxed mb-4">{job.description}</p>
       
-      <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+      <div className="grid grid-cols-2 gap-4 mb-4 text-sm border-strict p-3">
         <div>
-          <span className="font-medium text-gray-700">Category:</span> {job.category}
+          <span className="font-mono text-xs uppercase">Category:</span> <span className="font-sans text-gray-800">{job.category}</span>
         </div>
         <div>
-          <span className="font-medium text-gray-700">Location:</span> {job.location}
+          <span className="font-mono text-xs uppercase">Location:</span> <span className="font-sans text-gray-800">{job.location}</span>
         </div>
         <div>
-          <span className="font-medium text-gray-700">Price:</span> 
-          <span className="text-lg font-bold text-green-600 ml-2">{job.price} XLM</span>
+          <span className="font-mono text-xs uppercase">Price:</span> 
+          <span className="text-lg font-mono font-bold ml-2">{job.price} XLM</span>
         </div>
         <div>
-          <span className="font-medium text-gray-700">Worker:</span> 
-          {job.worker_public_key ? `${job.worker_public_key.slice(0, 8)}...` : 'Not assigned'}
+          <span className="font-mono text-xs uppercase">Worker:</span> 
+          <span className="font-mono">{job.worker_public_key ? `${job.worker_public_key.slice(0, 8)}...` : 'Not assigned'}</span>
         </div>
         {job.employer_public_key && (
           <div>
-            <span className="font-medium text-gray-700">Employer:</span> 
-            {job.employer_public_key.slice(0, 8)}...
+            <span className="font-mono text-xs uppercase">Employer:</span> 
+            <span className="font-mono">{job.employer_public_key.slice(0, 8)}...</span>
           </div>
         )}
         {job.assigned_at && (
           <div>
-            <span className="font-medium text-gray-700">Assigned:</span> 
-            {new Date(job.assigned_at).toLocaleDateString()}
+            <span className="font-mono text-xs uppercase">Assigned:</span> 
+            <span className="font-mono">{new Date(job.assigned_at).toLocaleDateString()}</span>
           </div>
         )}
         {job.completed_at && (
           <div>
-            <span className="font-medium text-gray-700">Completed:</span> 
-            {new Date(job.completed_at).toLocaleDateString()}
+            <span className="font-mono text-xs uppercase">Completed:</span> 
+            <span className="font-mono">{new Date(job.completed_at).toLocaleDateString()}</span>
           </div>
         )}
         {job.approved_at && (
           <div>
-            <span className="font-medium text-gray-700">Approved:</span> 
-            {new Date(job.approved_at).toLocaleDateString()}
+            <span className="font-mono text-xs uppercase">Approved:</span> 
+            <span className="font-mono">{new Date(job.approved_at).toLocaleDateString()}</span>
           </div>
         )}
       </div>
 
       {/* Payment Status */}
       {paymentStatus && (
-        <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-          <h4 className="font-medium text-gray-700 mb-2">Payment Status</h4>
-          <div className="text-sm text-gray-600">
+        <div className="mb-4 p-3 border-strict">
+          <h4 className="font-sans font-black uppercase tracking-tight text-sm mb-2">Payment Status</h4>
+          <div className="font-mono text-xs">
             <div>Status: <span className="font-medium">{paymentStatus.payment_status}</span></div>
             {paymentStatus.amount && (
               <div>Amount: <span className="font-medium">{paymentStatus.amount} XLM</span></div>
             )}
             {paymentStatus.released_at ? (
-              <div>Released: <span className="font-medium text-green-600">{new Date(paymentStatus.released_at).toLocaleString()}</span></div>
+              <div>Released: <span className="font-medium">{new Date(paymentStatus.released_at).toLocaleString()}</span></div>
             ) : paymentStatus.payment_status === 'paid' ? (
-              <div>Status: <span className="font-medium text-green-600">Payment Released</span></div>
+              <div>Status: <span className="font-medium">Payment Released</span></div>
             ) : null}
           </div>
         </div>
@@ -244,18 +244,18 @@ const JobManager = ({ job, onJobUpdate }) => {
 
       {/* Dual Approval Status */}
       {(job.status === 'completed' || job.status === 'approved') && (
-        <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-          <h4 className="font-medium text-blue-700 mb-2">Approval Status</h4>
-          <div className="text-sm text-blue-600">
+        <div className="mb-4 p-3 border-strict">
+          <h4 className="font-sans font-black uppercase tracking-tight text-sm mb-2">Approval Status</h4>
+          <div className="font-mono text-xs">
             <div>
               Worker Approval: 
-              <span className={`ml-2 font-medium ${job.worker_approved ? 'text-green-600' : 'text-yellow-600'}`}>
+              <span className="ml-2 font-medium">
                 {job.worker_approved ? '✅ Completed' : '⏳ Pending'}
               </span>
             </div>
             <div>
               Employer Approval: 
-              <span className={`ml-2 font-medium ${job.employer_approved ? 'text-green-600' : 'text-yellow-600'}`}>
+              <span className="ml-2 font-medium">
                 {job.employer_approved ? '✅ Service Confirmed' : '⏳ Pending'}
               </span>
             </div>
@@ -270,24 +270,24 @@ const JobManager = ({ job, onJobUpdate }) => {
 
       {/* Completion Notes Display */}
       {job.completion_notes && (
-        <div className="mb-4 p-3 bg-green-50 rounded-lg">
-          <h4 className="font-medium text-green-700 mb-2">Work Completion Notes</h4>
-          <p className="text-sm text-green-600">{job.completion_notes}</p>
+        <div className="mb-4 p-3 border-strict">
+          <h4 className="font-sans font-black uppercase tracking-tight text-sm mb-2">Work Completion Notes</h4>
+          <p className="font-sans text-gray-800 leading-relaxed text-sm">{job.completion_notes}</p>
         </div>
       )}
 
       {/* Worker Actions */}
       {/* Start Job Button - when job is paid and ready to start */}
       {isWorker && job.status === 'paid' && (
-        <div className="border-t pt-4">
-          <h4 className="font-medium text-gray-700 mb-3">Start Your Work</h4>
-          <p className="text-sm text-gray-600 mb-3">
+        <div className="border-t-strict pt-4">
+          <h4 className="font-sans font-black uppercase tracking-tight text-sm mb-3">Start Your Work</h4>
+          <p className="font-sans text-gray-800 leading-relaxed text-sm mb-3">
             Payment has been secured in escrow. Click below to start working on this job.
           </p>
           <button
             onClick={handleStartJob}
             disabled={loading}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-ink text-paper hover:bg-safety px-4 py-2 font-bold uppercase text-xs tracking-wide transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Starting...' : 'Start Job'}
           </button>
@@ -296,22 +296,22 @@ const JobManager = ({ job, onJobUpdate }) => {
 
       {/* Complete Job Button - when job is in progress and worker hasn't approved */}
       {isWorker && job.status === 'in_progress' && !job.worker_approved && (
-        <div className="border-t pt-4">
-          <h4 className="font-medium text-gray-700 mb-3">Complete & Approve Your Work</h4>
-          <p className="text-sm text-gray-600 mb-3">
+        <div className="border-t-strict pt-4">
+          <h4 className="font-sans font-black uppercase tracking-tight text-sm mb-3">Complete & Approve Your Work</h4>
+          <p className="font-sans text-gray-800 leading-relaxed text-sm mb-3">
             Mark your work as completed and confirm you have finished the job.
           </p>
           <textarea
             value={completionNotes}
             onChange={(e) => setCompletionNotes(e.target.value)}
             placeholder="Add notes about the completed work (optional)"
-            className="w-full p-3 border border-gray-300 rounded-lg resize-none"
+            className="bg-transparent border-b-strict border-ink outline-none py-3 font-sans text-sm text-gray-800 leading-relaxed focus:border-safety transition-colors rounded-none w-full resize-none"
             rows="3"
           />
           <button
             onClick={handleCompleteJob}
             disabled={loading}
-            className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="mt-3 bg-ink text-paper hover:bg-safety px-4 py-2 font-bold uppercase text-xs tracking-wide transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Submitting...' : 'Complete & Approve Work'}
           </button>
@@ -320,7 +320,7 @@ const JobManager = ({ job, onJobUpdate }) => {
 
       {/* Debug Info - Remove this after testing */}
       {isWorker && (
-        <div className="border-t pt-4 bg-gray-50 p-3 rounded text-xs">
+        <div className="border-t-strict pt-4 border-strict p-3 text-xs font-mono">
           <strong>Debug Info:</strong><br/>
           Status: {job.status}<br/>
           Worker Approved: {job.worker_approved ? 'true' : 'false'}<br/>
@@ -331,21 +331,21 @@ const JobManager = ({ job, onJobUpdate }) => {
 
       {/* Employer Actions */}
       {isEmployer && job.status === 'completed' && job.worker_approved && !job.employer_approved && (
-        <div className="border-t pt-4">
-          <h4 className="font-medium text-gray-700 mb-3">Confirm Service Receipt</h4>
-          <p className="text-sm text-gray-600 mb-3">
+        <div className="border-t-strict pt-4">
+          <h4 className="font-sans font-black uppercase tracking-tight text-sm mb-3">Confirm Service Receipt</h4>
+          <p className="font-sans text-gray-800 leading-relaxed text-sm mb-3">
             Review the completed work and confirm that you received the service to release payment.
           </p>
           {job.completion_notes && (
-            <div className="mb-3 p-3 bg-gray-50 rounded border">
-              <p className="text-sm font-medium text-gray-700">Worker's completion notes:</p>
-              <p className="text-sm text-gray-600 mt-1">"{job.completion_notes}"</p>
+            <div className="mb-3 p-3 border-strict">
+              <p className="text-xs font-mono uppercase">Worker completion notes:</p>
+              <p className="text-sm font-sans text-gray-800 leading-relaxed mt-1">"{job.completion_notes}"</p>
             </div>
           )}
           <button
             onClick={handleEmployerApproval}
             disabled={loading}
-            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-ink text-paper hover:bg-safety px-4 py-2 font-bold uppercase text-xs tracking-wide transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Confirming...' : 'Confirm Service & Release Payment'}
           </button>
@@ -354,9 +354,9 @@ const JobManager = ({ job, onJobUpdate }) => {
 
       {/* Status Messages */}
       {isWorker && job.worker_approved && !job.employer_approved && (
-        <div className="border-t pt-4">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-            <p className="text-sm text-yellow-700">
+        <div className="border-t-strict pt-4">
+          <div className="border-strict p-3">
+            <p className="text-sm font-sans text-gray-800 leading-relaxed">
               ✅ You've completed the work! Waiting for employer to confirm they received the service.
             </p>
           </div>
@@ -364,9 +364,9 @@ const JobManager = ({ job, onJobUpdate }) => {
       )}
 
       {isEmployer && !job.worker_approved && (
-        <div className="border-t pt-4">
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-            <p className="text-sm text-blue-700">
+        <div className="border-t-strict pt-4">
+          <div className="border-strict p-3">
+            <p className="text-sm font-sans text-gray-800 leading-relaxed">
               🔄 Work in progress. You'll be able to confirm service receipt once the worker completes the job.
             </p>
           </div>
@@ -374,9 +374,9 @@ const JobManager = ({ job, onJobUpdate }) => {
       )}
 
       {isEmployer && job.worker_approved && job.employer_approved && (
-        <div className="border-t pt-4">
-          <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-            <p className="text-sm text-green-700">
+        <div className="border-t-strict pt-4">
+          <div className="border-strict p-3">
+            <p className="text-sm font-sans text-gray-800 leading-relaxed">
               ✅ Service confirmed! Payment has been released to the worker.
             </p>
           </div>
@@ -384,9 +384,9 @@ const JobManager = ({ job, onJobUpdate }) => {
       )}
 
       {job.status === 'approved' && (
-        <div className="border-t pt-4">
-          <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-            <p className="text-sm text-green-700">
+        <div className="border-t-strict pt-4">
+          <div className="border-strict p-3">
+            <p className="text-sm font-sans text-gray-800 leading-relaxed">
               🎉 Both parties approved! Job completed successfully and payment released.
             </p>
           </div>
